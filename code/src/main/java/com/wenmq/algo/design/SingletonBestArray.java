@@ -1,5 +1,7 @@
 package com.wenmq.algo.design;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 public class SingletonBestArray {
     /**
      * 线程安全
@@ -56,4 +58,28 @@ public class SingletonBestArray {
         }
     }
 
+
+    public static class CASSingleton {
+
+        private static final AtomicReference<CASSingleton> INSTANCE = new AtomicReference<>();
+
+        private CASSingleton() {
+        }
+
+        public static CASSingleton getInstance() {
+            while (true) {
+                CASSingleton singleton = INSTANCE.get();
+                if (null != singleton) {
+                    return singleton;
+                }
+                singleton = new CASSingleton();
+                if (INSTANCE.compareAndSet(null, singleton)) {
+                    return singleton;
+                }
+            }
+        }
+    }
+//    看了基于 CAS AtomicReference 的实现
+//    作者：HollisChuang
+//    链接：https://juejin.im/post/6844903911740932109
 }
